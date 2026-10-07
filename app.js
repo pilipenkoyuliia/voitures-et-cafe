@@ -1,4 +1,5 @@
 'use strict';
+const SHEET_URL='https://script.google.com/macros/s/AKfycbx5Owt1l49wR-Xh7okBjlk_pTJwS8BZrpcRnFV394JGaFcI18g4Hf4OXZOBepHNS28vrw/exec';
 const menuButton = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#navigation');
 function closeMenu() { menuButton.setAttribute('aria-expanded','false'); menuButton.setAttribute('aria-label','Ouvrir le menu'); navigation.classList.remove('open'); document.body.classList.remove('menu-open'); }
@@ -18,28 +19,19 @@ document.querySelector('#professional-cta').addEventListener('click',()=>{form.e
 const dialog=document.querySelector('#request-dialog');
 document.querySelector('.dialog-close').addEventListener('click',()=>dialog.close());
 dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();}});
-let draft={subject:'',body:''};
-let emlUrl='';
-form.addEventListener('submit',event=>{
+form.addEventListener('submit',async event=>{
   event.preventDefault(); if(!form.reportValidity())return;
-  const data=new FormData(form);const field=name=>String(data.get(name)||'').trim();
-  draft.subject='Voitures et Café — Demande de participation — '+field('prenom')+' '+field('nom');
-  draft.body=[ 'Bonjour,','', 'Je souhaite participer à Voitures et Café au Château de Prunay, le dimanche 8 novembre 2026, de 09:00 à 12:00.','', 'COORDONNÉES','Prénom : '+field('prenom'),'Nom : '+field('nom'),'Téléphone : '+field('telephone'),'E-mail : '+field('email'),'', 'VÉHICULE','Marque et Modèle : '+field('vehicule'),'Numéro d’immatriculation : '+field('immatriculation'),'', 'PARTICIPATION','Profil : '+field('profil'),...(field('profil')==='Professionnel'?['Entreprise : '+field('entreprise'),'Site / Instagram : '+field('site')]:[]),'', 'CONSENTEMENTS','Utilisation des informations pour l’organisation : oui','Photos et vidéos du véhicule pendant l’événement : '+(data.has('imageConsent')?'oui':'non'),'', 'Merci de me confirmer ma participation après examen de ma demande.',field('prenom')+' '+field('nom')].join('\n');
-  document.querySelector('#email-draft').href='mailto:champeroux@me.com?subject='+encodeURIComponent(draft.subject)+'&body='+encodeURIComponent(draft.body);
-  document.querySelector('#download-note').textContent='';
-  document.querySelector('#request-text').value=draft.body;
-  document.querySelector('#download-request').hidden=true;
-  dialog.showModal();
-  prepareEml();
-});
-function base64Bytes(bytes){let binary='';for(let offset=0;offset<bytes.length;offset+=8192)binary+=String.fromCharCode(...bytes.subarray(offset,offset+8192));return btoa(binary);}
-const wrapBase64=value=>value.match(/.{1,76}/g)?.join('\r\n')||'';
-function prepareEml(){
-  const link=document.querySelector('#download-request');
+  const submitButton=form.querySelector('[type="submit"]');
+  const errorNote=document.querySelector('#form-error');
+  if(errorNote)errorNote.textContent='';
+  submitButton.disabled=true;
   try{
-    const subject='=?UTF-8?B?'+base64Bytes(new TextEncoder().encode(draft.subject))+'?=';
-    const eml=['To: champeroux@me.com','Subject: '+subject,'X-Unsent: 1','MIME-Version: 1.0','Content-Type: text/plain; charset=UTF-8','Content-Transfer-Encoding: base64','',wrapBase64(base64Bytes(new TextEncoder().encode(draft.body)))].join('\r\n')+'\r\n';
-    if(emlUrl)URL.revokeObjectURL(emlUrl);
-    emlUrl=URL.createObjectURL(new Blob([eml],{type:'message/rfc822'}));link.href=emlUrl;link.hidden=false;
-  }catch{document.querySelector('#download-note').textContent='Le téléchargement n’a pas abouti. Vous pouvez ouvrir votre messagerie ou copier le texte ci-dessous.';}
-}
+    await fetch(SHEET_URL,{method:'POST',mode:'no-cors',body:new URLSearchParams(new FormData(form))});
+    form.reset(); updateProfile();
+    dialog.showModal();
+  }catch{
+    if(errorNote)errorNote.textContent='L’envoi n’a pas abouti. Vérifiez votre connexion et réessayez, ou écrivez-nous à champeroux@me.com.';
+  }finally{
+    submitButton.disabled=false;
+  }
+});
