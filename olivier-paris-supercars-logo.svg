@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 260" role="img" aria-labelledby="title desc">
+  <title id="title">Olivier Paris Supercars</title>
+  <desc id="desc">Signature inspirée du logo du poster : silhouette automobile, Olivier, Paris, Supercars.</desc>
+  <g fill="none" stroke="#d9cca8" stroke-linecap="round">
+    <path d="M74 66c42-7 70-27 112-32 40-5 73-1 106 12 29 12 66 16 115 20" stroke-width="2.6"/>
+    <path d="M103 66c30-5 69-11 112-11 61 0 102 9 160 11" stroke-width="1.1" opacity=".6"/>
+  </g>
+  <text x="247" y="136" text-anchor="middle" fill="#f0f0e9" font-family="Baskerville, 'Times New Roman', serif" font-size="65" letter-spacing="12">OLIVIER</text>
+  <text x="246" y="178" text-anchor="middle" fill="#d9cca8" font-family="Baskerville, 'Times New Roman', serif" font-size="27" letter-spacing="12">PARIS</text>
+  <text x="243" y="218" text-anchor="middle" fill="#d9cca8" font-family="Arial, sans-serif" font-size="13" letter-spacing="7">SUPERCARS</text>
+</svg>

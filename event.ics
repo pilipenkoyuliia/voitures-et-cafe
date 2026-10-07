@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Voitures et Café//Prunay//FR
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cars-coffee-prunay-20261108@cars-coffee-prunay
+DTSTAMP:20261006T120000Z
+DTSTART:20261108T080000Z
+DTEND:20261108T110000Z
+SUMMARY:Voitures et Café — Château de Prunay
+LOCATION:Château de Prunay\, 19 Chemin de Prunay\, 78430 Louveciennes\, France
+DESCRIPTION:Rendez-vous privé. Participation sur confirmation des organisateurs. Café et pains au chocolat offerts. Contact : champeroux@me.com
+STATUS:TENTATIVE
+END:VEVENT
+END:VCALENDAR
